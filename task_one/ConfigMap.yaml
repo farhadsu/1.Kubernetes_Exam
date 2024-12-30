@@ -1,0 +1,25 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alpine-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: alpine
+  template:
+    metadata:
+      labels:
+        app: alpine
+    spec:
+      containers:
+        - name: alpine
+          image: alpine
+          command: ["/bin/sh", "-c", "while true; do echo \"Name: $NAME\"; sleep 5; done"]
+          env:
+            - name: NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: my-configmap
+                  key: name
